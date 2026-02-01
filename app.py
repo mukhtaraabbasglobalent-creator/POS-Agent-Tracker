@@ -2,16 +2,21 @@ import datetime
 from database import create_tables, add_transaction
 from calculations import calculate_charge, calculate_profit, calculate_total_money
 from reports import daily_summary, monthly_summary
+from export_reports import export_daily_csv, export_monthly_csv
 
 def main():
     create_tables()
     print("=== POS Agent Tracker ===")
 
     while True:
-        print("\n1. Add Transaction")
+        print("\n=== Main Menu ===")
+        print("1. Add Transaction")
         print("2. Show Daily Summary")
         print("3. Show Monthly Summary")
-        print("4. Exit")
+        print("4. Export Daily Report (CSV)")
+        print("5. Export Monthly Report (CSV)")
+        print("6. Exit")
+
         choice = input("Choose option: ")
 
         if choice == "1":
@@ -40,11 +45,17 @@ def main():
             monthly_summary()
 
         elif choice == "4":
+            export_daily_csv()
+
+        elif choice == "5":
+            export_monthly_csv()
+
+        elif choice == "6":
             print("Goodbye!")
             break
 
         else:
-            print("Invalid choice.")
+            print("Invalid choice. Please select a valid option.")
 
 if __name__ == "__main__":
     main()

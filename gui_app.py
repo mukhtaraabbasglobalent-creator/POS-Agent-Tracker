@@ -1,3 +1,21 @@
+import tkinter.simpledialog as sd
+
+# Set your PIN (for now, hardcoded)
+CORRECT_PIN = "1234"
+
+# Function to check PIN
+def ask_pin():
+    while True:
+        pin = sd.askstring("PIN Required", "Enter your 4-digit PIN:", show='*')
+        if pin is None:
+            exit()  # User canceled
+        elif pin == CORRECT_PIN:
+            break
+        else:
+            messagebox.showerror("Error", "Incorrect PIN! Try again.")
+
+# Ask for PIN before showing main window
+ask_pin()
 import tkinter as tk
 from tkinter import messagebox
 from database import create_tables, add_transaction

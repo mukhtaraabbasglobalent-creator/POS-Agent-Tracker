@@ -1,6 +1,7 @@
 import datetime
 from database import create_tables, add_transaction
 from calculations import calculate_charge, calculate_profit, calculate_total_money
+from reports import daily_summary, monthly_summary
 
 def main():
     create_tables()
@@ -8,7 +9,9 @@ def main():
 
     while True:
         print("\n1. Add Transaction")
-        print("2. Exit")
+        print("2. Show Daily Summary")
+        print("3. Show Monthly Summary")
+        print("4. Exit")
         choice = input("Choose option: ")
 
         if choice == "1":
@@ -31,8 +34,15 @@ def main():
             print(f"Total Business Money: ₦{total_money}")
 
         elif choice == "2":
+            daily_summary()
+
+        elif choice == "3":
+            monthly_summary()
+
+        elif choice == "4":
             print("Goodbye!")
             break
+
         else:
             print("Invalid choice.")
 

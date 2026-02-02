@@ -75,10 +75,12 @@ Export Confirmation:
 **Flow:** Users → Add Transaction → Database → Calculations → Summaries → Export Reports
 
 ---
-## 🧩 GUI + PIN Authentication Workflow
+## 🧩 GUI + PIN Authentication Workflow (Compact Version)
 
-This diagram shows the full workflow of the POS Agent Tracker system with the GUI and secure PIN authentication:
-+-------------------+ | Start Application | +-------------------+ | v +------------------------+ | PIN Authentication     | | - Enter 4-digit PIN    | | - Correct?             | +------------------------+ | Yes          | No v              | +-------------------+  <-----+ | Main POS GUI Menu |        | | 1. Add Transaction|        | | 2. Daily Summary  |        | | 3. Monthly Summary|        | | 4. Export Daily   |        | | 5. Export Monthly |        | | 6. Exit           |        | +-------------------+        | |                        | +------------------------+ | v +-------------------+ | Add Transaction   | | - Input Type      | | - Amount          | | - Cash Box/Wallet | | - Description     | | - Calculates Charge & Profit | +-------------------+ | v +-------------------+ | Update Database   | +-------------------+ | v +-------------------+ | Show Summary /    | | Export Reports    | +-------------------+ | v +-------------------+ | Exit Application  | +-------------------+
+This diagram shows how a user interacts with the POS Agent Tracker with GUI and PIN authentication:
+[Start Application] | v [PIN Authentication] | +----+----+ |         | Correct    Wrong |         | v         | [Main POS GUI Menu] <----+ | Add Transaction       | | Daily Summary         | | Monthly Summary       | | Export Daily Report   | | Export Monthly Report | | Exit                  | +-----------------------+ | v [Add Transaction] | Input Type | Amount | Cash Box/Wallet | Description | Calculates Charge & Profit | v [Update Database] | v [Show Summary / Export Reports] | v [Exit Application]
+
+---
 ### ✅ Key Points:
 
 1. **Secure Access** – PIN authentication ensures only authorized users access the system.  

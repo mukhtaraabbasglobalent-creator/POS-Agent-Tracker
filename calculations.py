@@ -1,19 +1,17 @@
-def calculate_charge(amount):
+def calculate_charge_and_profit(amount):
+    """
+    Calculate the transaction charge and profit.
+    Logic:
+        ₦1,000 – ₦9,999 → ₦100
+        ₦10,000 – ₦19,999 → ₦200
+    Profit = Charge (for now)
+    """
     if 1000 <= amount <= 9999:
-        return 100
+        charge = 100
     elif 10000 <= amount <= 19999:
-        return 200
-    elif 20000 <= amount <= 49999:
-        return 500
-    elif 50000 <= amount <= 100000:
-        return 1000
+        charge = 200
     else:
-        return 0
+        charge = 0  # Adjust if needed for other ranges
 
-
-def calculate_profit(amount, charge):
-    return amount - charge
-
-
-def calculate_total_money(cash_box, cash_wallet):
-    return cash_box + cash_wallet
+    profit = charge  # Currently profit is the same as charge
+    return charge, profit

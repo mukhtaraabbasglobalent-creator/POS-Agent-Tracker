@@ -1,93 +1,189 @@
-import tkinter.simpledialog as sd
-
-# Set your PIN (for now, hardcoded)
-CORRECT_PIN = "1234"
-
-# Function to check PIN
-def ask_pin():
-    while True:
-        pin = sd.askstring("PIN Required", "Enter your 4-digit PIN:", show='*')
-        if pin is None:
-            exit()  # User canceled
-        elif pin == CORRECT_PIN:
-            break
-        else:
-            messagebox.showerror("Error", "Incorrect PIN! Try again.")
-
-# Ask for PIN before showing main window
-ask_pin()
 import tkinter as tk
-from tkinter import messagebox
-from database import create_tables, add_transaction
-from calculations import calculate_charge, calculate_profit, calculate_total_money
-from reports import daily_summary, monthly_summary
-from export_reports import export_daily_csv, export_monthly_csv
-import datetime
+from tkinter import messagebox, ttk
+from datetime import datetime
+import csv
+from database import add_transaction, get_all_transactions
+from calculations import calculate_charge_and_profit
 
-create_tables()
+# ================== CONFIG ===================
+PIN_CODE = "1234"  # Change this to your secure PIN
+# ============================================
 
-# Main window
-root = tk.Tk()
-root.title("POS Agent Tracker")
-root.geometry("500x400")
+# ======== GUI APP ========
+class POSApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("POS Agent Tracker")
+        self.root.geometry("500x400")
+        self.current_user_authenticated = False
 
-# Functions for buttons
-def add_transaction_gui():
-    t_type = type_var.get()
-    try:
-        amount = float(amount_entry.get())
-        cash_box = float(box_entry.get())
-        cash_wallet = float(wallet_entry.get())
-        desc = desc_entry.get()
+        self.show_pin_screen()
 
-        charge = calculate_charge(amount)
-        profit = calculate_profit(amount, charge)
-        total_money = calculate_total_money(cash_box, cash_wallet)
-        date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # ---------- PIN SCREEN ----------
+    def show_pin_screen(self):
+        self.clear_frame()
+        tk.Label(self.root, text="Enter 4-digit PIN", font=("Arial", 16)).pack(pady=20)
+        self.pin_entry = tk.Entry(self.root, show="*", font=("Arial", 14))
+        self.pin_entry.pack(pady=10)
+        tk.Button(self.root, text="Submit", command=self.check_pin).pack(pady=10)
 
-        add_transaction((date, t_type, amount, charge, profit, cash_box, cash_wallet, total_money, desc))
-        messagebox.showinfo("Success", f"Transaction Saved!\nCharge: ₦{charge}\nProfit: ₦{profit}\nTotal Money: ₦{total_money}")
-    except ValueError:
-        messagebox.showerror("Error", "Please enter valid numbers.")
+    def check_pin(self):
+        entered_pin = self.pin_entry.get()
+        if entered_pin == PIN_CODE:
+            self.current_user_authenticated = True
+            self.show_main_menu()
+        else:
+            messagebox.showerror("Error", "Incorrect PIN!")
 
-def show_daily_summary_gui():
-    daily_summary()
+    # ---------- MAIN MENU ----------
+    def show_main_menu(self):
+        self.clear_frame()
+        tk.Label(self.root, text="POS Agent Tracker", font=("Arial", 16, "bold")).pack(pady=20)
 
-def show_monthly_summary_gui():
-    monthly_summary()
+        buttons = [
+            ("Add Transaction", self.show_add_transaction),
+            ("Daily Summary", self.show_daily_summary),
+            ("Monthly Summary", self.show_monthly_summary),
+            ("Export Daily Report", lambda: self.export_report("daily")),
+            ("Export Monthly Report", lambda: self.export_report("monthly")),
+            ("Exit", self.root.quit)
+        ]
 
-def export_daily_gui():
-    export_daily_csv()
+        for text, cmd in buttons:
+            tk.Button(self.root, text=text, width=30, command=cmd).pack(pady=5)
 
-def export_monthly_gui():
-    export_monthly_csv()
+    # ---------- ADD TRANSACTION ----------
+    def show_add_transaction(self):
+        self.clear_frame()
+        tk.Label(self.root, text="Add Transaction", font=("Arial", 16)).pack(pady=10)
 
-# Widgets
-tk.Label(root, text="Transaction Type:").pack()
-type_var = tk.StringVar(value="Deposit")
-tk.OptionMenu(root, type_var, "Deposit", "Withdrawal").pack()
+        tk.Label(self.root, text="Type (Deposit/Withdrawal)").pack()
+        self.type_entry = ttk.Combobox(self.root, values=["Deposit", "Withdrawal"])
+        self.type_entry.pack()
 
-tk.Label(root, text="Amount:").pack()
-amount_entry = tk.Entry(root)
-amount_entry.pack()
+        tk.Label(self.root, text="Amount").pack()
+        self.amount_entry = tk.Entry(self.root)
+        self.amount_entry.pack()
 
-tk.Label(root, text="Cash in Box:").pack()
-box_entry = tk.Entry(root)
-box_entry.pack()
+        tk.Label(self.root, text="Cash Box or Wallet").pack()
+        self.location_entry = ttk.Combobox(self.root, values=["Cash Box", "Wallet"])
+        self.location_entry.pack()
 
-tk.Label(root, text="Cash in Wallet:").pack()
-wallet_entry = tk.Entry(root)
-wallet_entry.pack()
+        tk.Label(self.root, text="Description").pack()
+        self.description_entry = tk.Entry(self.root)
+        self.description_entry.pack()
 
-tk.Label(root, text="Description:").pack()
-desc_entry = tk.Entry(root)
-desc_entry.pack()
+        tk.Button(self.root, text="Submit", command=self.submit_transaction).pack(pady=10)
+        tk.Button(self.root, text="Back", command=self.show_main_menu).pack()
 
-tk.Button(root, text="Add Transaction", command=add_transaction_gui).pack(pady=5)
-tk.Button(root, text="Daily Summary", command=show_daily_summary_gui).pack(pady=5)
-tk.Button(root, text="Monthly Summary", command=show_monthly_summary_gui).pack(pady=5)
-tk.Button(root, text="Export Daily Report", command=export_daily_gui).pack(pady=5)
-tk.Button(root, text="Export Monthly Report", command=export_monthly_gui).pack(pady=5)
-tk.Button(root, text="Exit", command=root.quit).pack(pady=10)
+    def submit_transaction(self):
+        t_type = self.type_entry.get()
+        try:
+            amount = float(self.amount_entry.get())
+        except ValueError:
+            messagebox.showerror("Error", "Amount must be a number")
+            return
+        location = self.location_entry.get()
+        description = self.description_entry.get()
 
-root.mainloop()
+        charge, profit = calculate_charge_and_profit(amount)
+        add_transaction(t_type, amount, location, description, charge, profit)
+        messagebox.showinfo("Success", f"Transaction added!\nCharge: ₦{charge}\nProfit: ₦{profit}")
+        self.show_main_menu()
+
+    # ---------- SUMMARIES ----------
+    def show_daily_summary(self):
+        self.clear_frame()
+        tk.Label(self.root, text="Daily Summary", font=("Arial", 16)).pack(pady=10)
+
+        transactions = get_all_transactions()
+        today = datetime.now().date()
+        total_deposit = total_withdrawal = total_charge = total_profit = 0
+
+        for tx in transactions:
+            if tx["date"].date() == today:
+                if tx["type"] == "Deposit":
+                    total_deposit += tx["amount"]
+                else:
+                    total_withdrawal += tx["amount"]
+                total_charge += tx["charge"]
+                total_profit += tx["profit"]
+
+        summary_text = (
+            f"Total Deposit: ₦{total_deposit}\n"
+            f"Total Withdrawal: ₦{total_withdrawal}\n"
+            f"Total Charges: ₦{total_charge}\n"
+            f"Total Profit: ₦{total_profit}"
+        )
+        tk.Label(self.root, text=summary_text, font=("Arial", 12)).pack(pady=10)
+        tk.Button(self.root, text="Back", command=self.show_main_menu).pack()
+
+    def show_monthly_summary(self):
+        self.clear_frame()
+        tk.Label(self.root, text="Monthly Summary", font=("Arial", 16)).pack(pady=10)
+
+        transactions = get_all_transactions()
+        today = datetime.now()
+        total_deposit = total_withdrawal = total_charge = total_profit = 0
+
+        for tx in transactions:
+            if tx["date"].year == today.year and tx["date"].month == today.month:
+                if tx["type"] == "Deposit":
+                    total_deposit += tx["amount"]
+                else:
+                    total_withdrawal += tx["amount"]
+                total_charge += tx["charge"]
+                total_profit += tx["profit"]
+
+        summary_text = (
+            f"Total Deposit: ₦{total_deposit}\n"
+            f"Total Withdrawal: ₦{total_withdrawal}\n"
+            f"Total Charges: ₦{total_charge}\n"
+            f"Total Profit: ₦{total_profit}"
+        )
+        tk.Label(self.root, text=summary_text, font=("Arial", 12)).pack(pady=10)
+        tk.Button(self.root, text="Back", command=self.show_main_menu).pack()
+
+    # ---------- EXPORT REPORT ----------
+    def export_report(self, period="daily"):
+        transactions = get_all_transactions()
+        today = datetime.now()
+        filename = ""
+
+        if period == "daily":
+            filename = f"Daily_Report_{today.strftime('%Y-%m-%d')}.csv"
+            filtered = [tx for tx in transactions if tx["date"].date() == today.date()]
+        else:
+            filename = f"Monthly_Report_{today.strftime('%Y-%m')}.csv"
+            filtered = [tx for tx in transactions if tx["date"].year == today.year and tx["date"].month == today.month]
+
+        if not filtered:
+            messagebox.showinfo("Info", "No transactions to export")
+            return
+
+        with open(filename, "w", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=["type", "amount", "location", "description", "charge", "profit", "date"])
+            writer.writeheader()
+            for tx in filtered:
+                writer.writerow({
+                    "type": tx["type"],
+                    "amount": tx["amount"],
+                    "location": tx["location"],
+                    "description": tx["description"],
+                    "charge": tx["charge"],
+                    "profit": tx["profit"],
+                    "date": tx["date"].strftime("%Y-%m-%d %H:%M:%S")
+                })
+
+        messagebox.showinfo("Success", f"{filename} exported successfully!")
+
+    # ---------- UTILITY ----------
+    def clear_frame(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+# ===== RUN APP =====
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = POSApp(root)
+    root.mainloop()

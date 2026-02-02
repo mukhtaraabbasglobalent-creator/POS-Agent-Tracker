@@ -6,26 +6,24 @@ Financial tracking and tax-ready reporting app for POS agents and small business
 
 ## 📌 Project Overview
 
-The **POS Agent Financial Tracker System** is a fintech support application designed to help POS agents and small business owners:
+The POS Agent Financial Tracker System is a fintech support application designed to help POS agents and small business owners:
 
 - Record daily transactions
 - Automatically calculate service charges
 - Monitor business cash flow
 - Generate reports for tax and auditing purposes
 
-This system combines **financial tracking, automation, and record keeping** to improve accountability and support better financial reporting.
+This system combines financial tracking, automation, and record keeping to improve accountability and support better financial reporting.
 
 ---
 
 ## 🎯 Purpose of the Project
 
-Many POS agents operate daily without structured digital records. This project helps:
-
-- Track **cash in (deposits)** and **cash out (withdrawals)**
-- Automatically calculate **transaction charges**
-- Show **daily profit**
-- Maintain **total business money records** (cash box + wallet)
-- Provide a simple system to support **financial reporting and tax analysis**
+- Track cash in (deposits) and cash out (withdrawals)
+- Automatically calculate transaction charges
+- Show daily profit
+- Maintain total business money records (cash box + wallet)
+- Provide a simple system to support financial reporting and tax analysis
 
 ---
 
@@ -49,54 +47,89 @@ Many POS agents operate daily without structured digital records. This project h
 
 ---
 
-## 🖼 Screenshots
+## 🖼 Screenshots (placeholders)
 
-Main Menu:  
-![Main Menu](screenshots/main_menu.png)  
-
-Add Transaction:  
-![Add Transaction](screenshots/add_transaction.png)  
-
-Daily Summary:  
-![Daily Summary](screenshots/daily_summary.png)  
-
-Monthly Summary:  
-![Monthly Summary](screenshots/monthly_summary.png)  
-
-Export Confirmation:  
-![Export](screenshots/export.png)  
+- Main Menu: `screenshots/main_menu.png`  
+- Add Transaction: `screenshots/add_transaction.png`  
+- Daily Summary: `screenshots/daily_summary.png`  
+- Monthly Summary: `screenshots/monthly_summary.png`  
+- Export Confirmation: `screenshots/export.png`  
 
 ---
 
 ## 🧩 Workflow
 
-![Workflow](screenshots/workflow.png)  
-
 **Flow:** Users → Add Transaction → Database → Calculations → Summaries → Export Reports
 
 ---
-## 🧩 GUI + PIN Authentication Workflow (Compact Version)
 
-This diagram shows how a user interacts with the POS Agent Tracker with GUI and PIN authentication:
-[Start Application] | v [PIN Authentication] | +----+----+ |         | Correct    Wrong |         | v         | [Main POS GUI Menu] <----+ | Add Transaction       | | Daily Summary         | | Monthly Summary       | | Export Daily Report   | | Export Monthly Report | | Exit                  | +-----------------------+ | v [Add Transaction] | Input Type | Amount | Cash Box/Wallet | Description | Calculates Charge & Profit | v [Update Database] | v [Show Summary / Export Reports] | v [Exit Application]
+## 🧩 GUI + PIN Authentication Workflow (Professional Visual Flowchart)
+┌───────────────────┐
+         │ Start Application │
+         └───────────────────┘
+                  │
+                  ▼
+         ┌───────────────────────┐
+         │  PIN Authentication    │
+         │ - Enter 4-digit PIN   │
+         │ - Correct?            │
+         └───────────────────────┘
+           │           │
+       Correct        Wrong
+           │           │
+           ▼           │
+┌───────────────────────────────┐
+│       Main POS GUI Menu        │
+│ 1. Add Transaction             │
+│ 2. Daily Summary               │
+│ 3. Monthly Summary             │
+│ 4. Export Daily Report         │
+│ 5. Export Monthly Report       │
+│ 6. Exit                        │
+└───────────────────────────────┘
+                  │
+                  ▼
+         ┌───────────────────┐
+         │  Add Transaction  │
+         │ - Input Type      │
+         │ - Amount          │
+         │ - Cash Box/Wallet │
+         │ - Description     │
+         │ - Calculate Profit│
+         └───────────────────┘
+                  │
+                  ▼
+         ┌───────────────────┐
+         │  Update Database  │
+         └───────────────────┘
+                  │
+                  ▼
+         ┌────────────────────────┐
+         │ Show Summary / Export  │
+         │        Reports         │
+         └────────────────────────┘
+                  │
+                  ▼
+         ┌───────────────────┐
+         │ Exit Application  │
+         └───────────────────┘
 
 ---
-### ✅ Key Points:
 
-1. **Secure Access** – PIN authentication ensures only authorized users access the system.  
-2. **GUI Interface** – Users interact with buttons and input fields, not command-line.  
-3. **Automatic Calculations** – Charges and profits calculated automatically on each transaction.  
-4. **Daily & Monthly Summaries** – View business totals instantly.  
-5. **Export Reports** – Save CSV files for auditing, reporting, or tax purposes.  
+### ✅ Key Points
 
-This visual clearly shows **how a user interacts** with the POS Agent Tracker from start to finish, making it **presentation-ready for clients or government agencies**.
+- **Secure Access:** PIN authentication ensures only authorized users access the system.  
+- **GUI Interface:** Users interact with buttons and input fields.  
+- **Automatic Calculations:** Charges and profits are calculated automatically.  
+- **Daily & Monthly Summaries:** View business totals instantly.  
+- **Export Reports:** Save CSV files for auditing or tax purposes.  
+
+---
+
 ## 📄 Sample Reports
 
-CSV files generated by the system:
-
-- `Daily_Report_YYYY-MM-DD.csv`
-- `Monthly_Report_YYYY-MM.csv`
-
+- `Daily_Report_YYYY-MM-DD.csv`  
+- `Monthly_Report_YYYY-MM.csv`  
 Uploaded in `sample_reports` folder for reference.
 
 ---
@@ -104,44 +137,10 @@ Uploaded in `sample_reports` folder for reference.
 ## 🎬 Demo Video
 
 Watch the app in action:  
-[Demo Video Placeholder](demo/POS_Tracker_Demo.mp4)  
-
-*(Replace with your actual video link or file)*
+`demo/POS_Tracker_Demo.mp4` *(replace with your actual video file or link)*
 
 ---
 
 ## 💻 How to Run
 
-1. Clone the repo:
-```
-git clone https://github.com/mukhtaraabbasglobalent-creator/POS-Agent-Tracker.git
-```
-2. Install dependencies:
-```
-pip install -r requirements.txt
-```
-3. Run the app:
-```
-python app.py
-```
-4. Use the menu to:
-   - Add Transactions
-   - View Daily & Monthly Summaries
-   - Export CSV Reports
-
----
-
-## 🔐 Future Enhancements
-
-- GUI (Graphical Interface)
-- Authentication / PIN for security
-- Cloud-based data storage
-- PDF report generation
-- AI integration for business insights
-
----
-
-## 👤 Project Author
-
-**Mukhtar A Abbas Global Ent.**  
-Focused on fintech systems, cybersecurity learning, and building practical technology solutions for business improvement.
+1. Clone the repo

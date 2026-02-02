@@ -13,17 +13,15 @@ The POS Agent Financial Tracker System is a fintech support application designed
 - Monitor business cash flow
 - Generate reports for tax and auditing purposes
 
-This system combines financial tracking, automation, and record keeping to improve accountability and support better financial reporting.
-
 ---
 
 ## 🎯 Purpose of the Project
 
-- Track cash in (deposits) and cash out (withdrawals)
-- Automatically calculate transaction charges
-- Show daily profit
-- Maintain total business money records (cash box + wallet)
-- Provide a simple system to support financial reporting and tax analysis
+- Track cash in (deposits) and cash out (withdrawals)  
+- Automatically calculate transaction charges  
+- Show daily profit  
+- Maintain total business money records (cash box + wallet)  
+- Provide a simple system to support financial reporting and tax analysis  
 
 ---
 
@@ -39,11 +37,11 @@ This system combines financial tracking, automation, and record keeping to impro
 | ₦10,000 – ₦19,999 | ₦200  |
 
 ### 📊 Summaries
-- Daily Summary: Total Deposits, Withdrawals, Charges, Profit, Business Money
-- Monthly Summary: Same as daily, aggregated by month
+- Daily Summary: Total Deposits, Withdrawals, Charges, Profit, Business Money  
+- Monthly Summary: Same as daily, aggregated by month  
 
 ### 💾 Export Reports
-- Export daily or monthly transactions to CSV files for auditing or presentation
+- Export daily or monthly transactions to CSV files for auditing or presentation  
 
 ---
 
@@ -59,11 +57,11 @@ This system combines financial tracking, automation, and record keeping to impro
 
 ## 🧩 Workflow
 
-**Flow:** Users → Add Transaction → Database → Calculations → Summaries → Export Reports
+**Flow:** Users → Add Transaction → Database → Calculations → Summaries → Export Reports  
 
 ---
 
-## 🧩 GUI + PIN Authentication Workflow (Professional Visual Flowchart)
+## 🧩 GUI + PIN Authentication Workflow (Professional Flowchart)
 ┌───────────────────┐
          │ Start Application │
          └───────────────────┘
@@ -113,6 +111,7 @@ This system combines financial tracking, automation, and record keeping to impro
          ┌───────────────────┐
          │ Exit Application  │
          └───────────────────┘
+Copy code
 
 ---
 
@@ -142,5 +141,25 @@ Watch the app in action:
 ---
 
 ## 💻 How to Run
-
 1. Clone the repo
+   2. Install dependencies:
+   3. Run the app:
+   4. Use the menu to:
+   - Add Transactions  
+   - View Daily & Monthly Summaries  
+   - Export CSV Reports  
+
+---
+
+## 🔐 Future Enhancements
+
+- Cloud-based data storage  
+- PDF report generation  
+- AI integration for business insights  
+
+---
+
+## 👤 Project Author
+
+**Mukhtar A Abbas Global Ent.**  
+Focused on fintech systems, cybersecurity learning, and building practical technology solutions for business improvement.
